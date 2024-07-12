@@ -1,14 +1,10 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { Link } from "react-router-dom";
-import { NavbarStarWars } from "./NavbarStarWars.jsx";
 
 export const Planets = () => {
     return (
         <div className="container-fluid bg-dark">
-            <div className="row">
-               <NavbarStarWars/>
-            </div>
             <div className="row d-flex justify-content-center mt-5 pb-5">
                 <div className="col-10">
                     <div className="row">
