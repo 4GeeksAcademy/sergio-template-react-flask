@@ -17,6 +17,7 @@ import { EditContact } from "./pages/EditContact.jsx"
 import { Characters } from "./pages/Characters.jsx";
 import { Planets } from "./pages/Planets.jsx";
 import { Starships } from "./pages/Starships.jsx";
+import { SingleStarShips } from "./pages/SingleStarShips.jsx";
 import { ContactList } from "./pages/ContactList.jsx";
 
 
@@ -44,6 +45,7 @@ const Layout = () => {
                         <Route element={<Characters />} path='/characters' />
                         <Route element={<Planets />} path='/planets' />
                         <Route element={<Starships />} path='/star-ships' />
+                        <Route element={<SingleStarShips />} path='/single-star-ships' />
                         <Route element={<ContactList />} path='/contact-list' />         
                     </Routes>
                     <Footer />

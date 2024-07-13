@@ -18,7 +18,9 @@ const getState = ({ getStore, getActions, setStore }) => {
             host: 'https://playground.4geeks.com/contact',
             user: 'agenda-sergio',
             currentContact: {},
-			newContact: {}
+			newContact: {},
+			starships: {},
+			currentStarShip: {}
 		},
 		actions: {
 			exampleFunction: () => {
@@ -113,6 +115,30 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log('Error editing contact:', response.status, response.statusText);
 					return;
 				}
+			},
+// --------------- GET STARSHIPS ---------------------------
+			getStarship: async () => {
+				const uri = `${process.env.URISWAPITECH}/api/starships`;
+				const options = {
+					method: 'GET'
+				};
+				const response = await fetch(uri, options);
+				if (!response.ok) {
+					console.log('Error: ', response.status.text, response.statusText);
+					return;
+				}
+				const data = await response.json()
+				setStore({starships: data.results})
+			},
+			getSingleStarShip: async (uri) => {
+				const response = await fetch(uri); 
+				if(!response.ok) {
+					console.log('Error: ', response.status, response.statusText);
+					return;
+				}
+				const data = await response.json();
+				console.log(data.result.properties);
+				setStore({currentStarShip: data.result.properties})
 			}
 		}
 	};

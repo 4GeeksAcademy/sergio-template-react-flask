@@ -1,70 +1,37 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
-import { Navbar } from "../component/Navbar.jsx";
+import { Link, useNavigate } from "react-router-dom";
+
 
 export const Starships = () => {
+    const { store, actions } = useContext(Context);
+    const navigate = useNavigate();
+
+    const handleDetail = async (uri) => {
+    console.log(uri);
+    await actions.getSingleStarShip(uri)
+    navigate('/single-star-ships')
+    }
+
     return (
         <div className="container-fluid bg-dark">
             <div className="row d-flex justify-content-center mt-5 pb-5">
                 <div className="col-10">
                     <div className="row">
-                        <div className="col-12 col-sm-6 col-md-4 col-lg-3 p-3">
+                    {store.starships && store.starships.map((item) =>(
+                        <div className="col-12 col-sm-6 col-md-4 col-lg-3 p-3" key={item.uid}>
                                 <div className="card">
                                     <img src="https://starwars-visualguide.com/assets/img/starships/10.jpg" className="card-img-top"/>
                                     <div className="card-body">
-                                        <h5 className="card-title">Card title</h5> 
-                                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi, est! Aliquam distinctio laudantium recusandae quasi iure dolor ipsum, doloremque doloribus!     
-                                        </p>
+                                        <h5 className="card-title">{item.name}</h5> 
                                         <div className="d-flex justify-content-between">
-                                            <a href="#" className="btn btn-secondary">Details</a>
-                                            <button type="button" class="btn btn-outline-warning"><i class="fa-regular fa-heart fa-lg"></i></button>
+                                        <button className="btn btn-secondary" onClick={() => handleDetail(item.url)}>Details</button>
+                                            <button type="button" className="btn btn-outline-warning"><i className="fa-regular fa-heart fa-lg"></i></button>
                                         </div>                          
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-12 col-sm-6 col-md-4 col-lg-3 p-3">
-                                <div className="card">
-                                    <img src="https://starwars-visualguide.com/assets/img/starships/10.jpg" className="card-img-top"/>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Card title</h5> 
-                                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi, est! Aliquam distinctio laudantium recusandae quasi iure dolor ipsum, doloremque doloribus!     
-                                        </p>
-                                        <div className="d-flex justify-content-between">
-                                            <a href="#" className="btn btn-secondary">Details</a>
-                                            <button type="button" class="btn btn-outline-warning"><i class="fa-regular fa-heart fa-lg"></i></button>
-                                        </div>                          
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-12 col-sm-6 col-md-4 col-lg-3 p-3">
-                                <div className="card">
-                                    <img src="https://starwars-visualguide.com/assets/img/starships/10.jpg" className="card-img-top"/>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Card title</h5> 
-                                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi, est! Aliquam distinctio laudantium recusandae quasi iure dolor ipsum, doloremque doloribus!     
-                                        </p>
-                                        <div className="d-flex justify-content-between">
-                                            <a href="#" className="btn btn-secondary">Details</a>
-                                            <button type="button" class="btn btn-outline-warning"><i class="fa-regular fa-heart fa-lg"></i></button>
-                                        </div>                          
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-12 col-sm-6 col-md-4 col-lg-3 p-3">
-                                <div className="card">
-                                    <img src="https://starwars-visualguide.com/assets/img/starships/10.jpg" className="card-img-top"/>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Card title</h5> 
-                                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nisi, est! Aliquam distinctio laudantium recusandae quasi iure dolor ipsum, doloremque doloribus!     
-                                        </p>
-                                        <div className="d-flex justify-content-between">
-                                            <a href="#" className="btn btn-secondary">Details</a>
-                                            <button type="button" class="btn btn-outline-warning"><i class="fa-regular fa-heart fa-lg"></i></button>
-                                        </div>                          
-                                    </div>
-                                </div>
-                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
