@@ -16,6 +16,8 @@ import { AddContact } from "./pages/AddContact.jsx";
 import { EditContact } from "./pages/EditContact.jsx"
 import { Characters } from "./pages/Characters.jsx";
 import { Planets } from "./pages/Planets.jsx";
+import { SinglePlanet } from "./pages/SinglePlanet.jsx"
+import { SingleCharacter } from "./pages/SingleCharacter.jsx";
 import { Starships } from "./pages/Starships.jsx";
 import { SingleStarShips } from "./pages/SingleStarShips.jsx";
 import { ContactList } from "./pages/ContactList.jsx";
@@ -30,7 +32,7 @@ const Layout = () => {
     if(!process.env.BACKEND_URL || process.env.BACKEND_URL == "") return <BackendURL/ >;
 
     return (
-        <div className="d-flex flex-column min-vh-100">
+        <div className="d-flex flex-column min-vh-100 bg-dark">
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
@@ -45,6 +47,8 @@ const Layout = () => {
                         <Route element={<Characters />} path='/characters' />
                         <Route element={<Planets />} path='/planets' />
                         <Route element={<Starships />} path='/star-ships' />
+                        <Route element={<SingleCharacter />} path='/single-character' />
+                        <Route element={<SinglePlanet />} path='/single-planet' />
                         <Route element={<SingleStarShips />} path='/single-star-ships' />
                         <Route element={<ContactList />} path='/contact-list' />         
                     </Routes>

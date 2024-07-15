@@ -1,64 +1,59 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Context } from "../store/appContext";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export const Characters = () => {
+    const { store, actions } = useContext(Context);
+    const navigate = useNavigate();
+
+    const handleDetail = async (uri) => {
+        await actions.getSingleCharacter(uri);
+        navigate('/single-character');
+    };
+
+    const handleFavorite = (name) => {
+        if (store.favorites.includes(name)) {
+            actions.deleteFavorite(name);
+        } else {
+            actions.addFavorite(name);
+        }
+    };
+
+    const handleErrorImg = (event) => {
+        event.target.src = 'https://starwars-visualguide.com/assets/img/placeholder.jpg';
+    };
+
     return (
         <div className="container-fluid bg-dark">
             <div className="row d-flex justify-content-center mt-5 pb-5">
                 <div className="col-10">
                     <div className="row">
-                        <div className="col-12 col-sm-6 col-md-4 col-lg-3 p-3">
+                        {store.characters && store.characters.map((item) => (
+                            <div className="col-12 col-sm-6 col-md-4 col-lg-3 p-3" key={item.uid}>
                                 <div className="card">
-                                    <img src="https://starwars-visualguide.com/assets/img/characters/4.jpg" className="card-img-top"/>
+                                    <img 
+                                        src={`https://starwars-visualguide.com/assets/img/characters/${item.uid}.jpg`} 
+                                        className="card-img-top" 
+                                        alt={item.name} 
+                                        onError={handleErrorImg}
+                                    />
                                     <div className="card-body">
-                                        <h5 className="card-title">Card title</h5> 
+                                        <h5 className="card-title">{item.name}</h5>
                                         <div className="d-flex justify-content-between">
-                                            <a href="#" className="btn btn-secondary">Details</a>
-                                            <button type="button" class="btn btn-outline-warning"><i class="fa-regular fa-heart fa-lg"></i></button>
-                                        </div>                          
+                                            <button className="btn btn-secondary" onClick={() => handleDetail(item.url)}>Details</button>
+                                            <button onClick={() => handleFavorite(item.name)} type="button" className="btn btn-outline-warning">
+                                                <i className="fas fa-heart fa-lg"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-12 col-sm-6 col-md-4 col-lg-3 p-3">
-                                <div className="card">
-                                    <img src="https://starwars-visualguide.com/assets/img/characters/4.jpg" className="card-img-top"/>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Card title</h5> 
-                                        <div className="d-flex justify-content-between">
-                                            <a href="#" className="btn btn-secondary">Details</a>
-                                            <button type="button" class="btn btn-outline-warning"><i class="fa-regular fa-heart fa-lg"></i></button>
-                                        </div>                          
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-12 col-sm-6 col-md-4 col-lg-3 p-3">
-                                <div className="card">
-                                    <img src="https://starwars-visualguide.com/assets/img/characters/4.jpg" className="card-img-top"/>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Card title</h5> 
-                                        <div className="d-flex justify-content-between">
-                                            <a href="#" className="btn btn-secondary">Details</a>
-                                            <button type="button" class="btn btn-outline-warning"><i class="fa-regular fa-heart fa-lg"></i></button>
-                                        </div>                          
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-12 col-sm-6 col-md-4 col-lg-3 p-3">
-                                <div className="card">
-                                    <img src="https://starwars-visualguide.com/assets/img/characters/4.jpg" className="card-img-top"/>
-                                    <div className="card-body">
-                                        <h5 className="card-title">Card title</h5> 
-                                        <div className="d-flex justify-content-between">
-                                            <a href="#" className="btn btn-secondary">Details</a>
-                                            <button type="button" class="btn btn-outline-warning"><i class="fa-regular fa-heart fa-lg"></i></button>
-                                        </div>                          
-                                    </div>
-                                </div>
-                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
+
+
