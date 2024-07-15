@@ -30,7 +30,7 @@ export const EditContact = () => {
         await actions.setCurrentContact(store.currentContact); 
         await actions.editContact(dataToSend);
         await actions.getContacts();
-        navigate('/');
+        navigate('/contact-list');
     }
 
     return (
@@ -61,7 +61,7 @@ export const EditContact = () => {
                 </div>
                 <div className="d-flex justify-content-between my-3 mt-5">
                     <button type="submit" className="btn btn-success mr-3">Guardar</button>
-                    <Link to="/">
+                    <Link to="/contact-list">
                         <button type="reset" className="btn btn-danger">Cancelar</button>
                     </Link>
                 </div>

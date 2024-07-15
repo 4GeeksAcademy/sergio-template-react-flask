@@ -22,7 +22,7 @@ export const AddContact = () => {
 		};
 		await actions.addContact(datatoSend)
 		await actions.getContacts()
-		navigate('/')
+		navigate('/contact-list')
 	}
 
 	return (
@@ -53,7 +53,7 @@ export const AddContact = () => {
 				</div>
 				<div className="d-flex justify-content-between my-3 mt-5">
 					<button type="submit" className="btn btn-success mr-3">Guardar</button>
-					<Link to="/">
+					<Link to="/contact-list">
 						<button type="reset" className="btn btn-link">Volver a contactos</button>
 					</Link>
 				</div>

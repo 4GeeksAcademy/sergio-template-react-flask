@@ -16,7 +16,7 @@ export const ContactDetail = () => {
                             <p className="text-muted mb-0"><i className="fa-solid fa-location-dot mx-3"></i> {store.currentContact.address}</p>
 							<p className="text-muted mb-0"><i className="fa-solid fa-phone mx-3"></i> {store.currentContact.phone}</p>
 							<p className="text-muted mb-5"><i className="fa-solid fa-envelope mx-3"></i> {store.currentContact.email}</p>
-                            <Link to="/">
+                            <Link to="/contact-list">
                                 <button className="btn btn-secondary">Volver a todos los contactos</button>
                             </Link>
                         </div>
