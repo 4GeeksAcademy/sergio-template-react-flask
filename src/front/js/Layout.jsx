@@ -21,6 +21,8 @@ import { SingleCharacter } from "./pages/SingleCharacter.jsx";
 import { Starships } from "./pages/Starships.jsx";
 import { SingleStarShips } from "./pages/SingleStarShips.jsx";
 import { ContactList } from "./pages/ContactList.jsx";
+import { Login } from "./pages/Login.jsx";
+import { SignUp } from "./pages/SignUp.jsx";
 
 
 //create your first component
@@ -50,7 +52,9 @@ const Layout = () => {
                         <Route element={<SingleCharacter />} path='/single-character' />
                         <Route element={<SinglePlanet />} path='/single-planet' />
                         <Route element={<SingleStarShips />} path='/single-star-ships' />
-                        <Route element={<ContactList />} path='/contact-list' />         
+                        <Route element={<ContactList />} path='/contact-list' />       
+                        <Route element={<Login />} path='/login' />
+                        <Route element={<SignUp />} path='/sign-up' />  
                     </Routes>
                     <Footer />
                 </ScrollToTop>

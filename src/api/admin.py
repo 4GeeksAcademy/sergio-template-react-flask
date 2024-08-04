@@ -7,7 +7,7 @@ Proporciona una interfaz gráfica para realizar operaciones CRUD y otras configu
 import os
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
-from .models import db, Users, Posts, Medias, Followers, Comments
+from .models import db, Users
 
 def setup_admin(app):
     app.secret_key = os.environ.get('FLASK_APP_KEY', 'sample key')

@@ -60,6 +60,16 @@ export const Navbar = () => {
                                 )}
                             </ul>
                         </div>
+                        <li className="nav-item mx-3 my-2 d-flex align-items-center">
+                            <Link className="nav-link" to="/login">
+                                <button type="button" className="btn btn-success text-white">Login</button>
+                            </Link>
+                        </li>
+                        <li className="nav-item my-2 d-flex align-items-center">
+                            <Link className="nav-link" to="/sign-up">
+                                <button type="button" className="btn btn-primary text-white">Sign up</button>
+                            </Link>
+                        </li>
                     </ul>
                 </div>
             </div>

@@ -51,73 +51,9 @@ class Users(db.Model):
             'email': self.email
         }
 
-class Posts(db.Model):
-    __tablename__ = 'posts'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user = db.relationship('Users', backref=db.backref('posts', lazy=True))
 
-    def __repr__(self):
-        return f'<Post {self.id}>'
 
-    def serialize(self):
-        return {
-            'id': self.id,
-            'user_id': self.user_id
-        }
 
-class Medias(db.Model):
-    __tablename__ = 'medias'
-    id = db.Column(db.Integer, primary_key=True)
-    type = db.Column(db.String(50), nullable=False)
-    url = db.Column(db.String(200), nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
-    post = db.relationship('Posts', backref=db.backref('media', lazy=True))
-    def __repr__(self):
-        return f'<Media {self.id}, Type: {self.type}>'
 
-    def serialize(self):
-        return {
-            'id': self.id,
-            'type': self.type,
-            'url': self.url,
-            'post_id': self.post_id
-        }
 
-class Followers(db.Model):
-    __tablename__ = 'followers'
-    id = db.Column(db.Integer, primary_key=True)
-    user_from_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user_to_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user_from = db.relationship('Users', foreign_keys=[user_from_id], backref=db.backref('following', lazy='dynamic'))
-    user_to = db.relationship('Users', foreign_keys=[user_to_id], backref=db.backref('followers', lazy='dynamic'))
-
-    def __repr__(self):
-        return f'<Follower {self.user_from_id} follows {self.user_to_id}>'
-
-    def serialize(self):
-        return {
-            'user_from_id': self.user_from_id,
-            'user_to_id': self.user_to_id
-        }
-
-class Comments(db.Model):
-    __tablename__ = 'comments'
-    id = db.Column(db.Integer, primary_key=True)
-    comment_text = db.Column(db.String(500), nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
-    author = db.relationship('Users', backref=db.backref('comments', lazy=True))
-    post = db.relationship('Posts', backref=db.backref('comments', lazy=True))
-
-    def __repr__(self):
-        return f'<Comment {self.id}>'
-
-    def serialize(self):
-        return {
-            'id': self.id,
-            'comment_text': self.comment_text,
-            'author_id': self.author_id,
-            'post_id': self.post_id
-        }
 
