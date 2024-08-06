@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { Logout } from "./Logout.jsx";
 
 export const Navbar = () => {
     const { store, actions } = useContext(Context);
@@ -61,14 +62,22 @@ export const Navbar = () => {
                             </ul>
                         </div>
                         <li className="nav-item mx-3 my-2 d-flex align-items-center">
-                            <Link className="nav-link" to="/login">
-                                <button type="button" className="btn btn-success text-white">Login</button>
-                            </Link>
-                        </li>
-                        <li className="nav-item my-2 d-flex align-items-center">
-                            <Link className="nav-link" to="/sign-up">
-                                <button type="button" className="btn btn-primary text-white">Sign up</button>
-                            </Link>
+                            {store.isLoged ? 
+                                <>
+                                    <Link to="/">
+                                        <Logout/>
+                                    </Link>
+                                </>
+                            : 
+                                <>
+                                    <Link to="/login">
+                                        <button className="btn btn-primary ms-2">Login</button>
+                                    </Link>
+                                    <Link to="/signup">
+                                        <button className="btn btn-success ms-2">Signup</button>
+                                    </Link>
+                                </>
+                            }
                         </li>
                     </ul>
                 </div>

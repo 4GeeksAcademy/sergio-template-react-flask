@@ -23,6 +23,9 @@ import { SingleStarShips } from "./pages/SingleStarShips.jsx";
 import { ContactList } from "./pages/ContactList.jsx";
 import { Login } from "./pages/Login.jsx";
 import { SignUp } from "./pages/SignUp.jsx";
+import { Alert } from "./component/Alert.jsx";
+import { Profile } from "./pages/Profile.jsx";
+import { Dashboard } from "./pages/Dashboard.jsx";
 
 
 //create your first component
@@ -38,6 +41,7 @@ const Layout = () => {
             <BrowserRouter basename={basename}>
                 <ScrollToTop>
                     <Navbar />
+                    <Alert />
                     <Routes>
                         <Route element={<Home />} path="/" />
                         <Route element={<Demo />} path="/demo" />
@@ -54,7 +58,9 @@ const Layout = () => {
                         <Route element={<SingleStarShips />} path='/single-star-ships' />
                         <Route element={<ContactList />} path='/contact-list' />       
                         <Route element={<Login />} path='/login' />
-                        <Route element={<SignUp />} path='/sign-up' />  
+                        <Route element={<SignUp />} path='/sign-up' /> 
+                        <Route element={<Profile />} path='/profile' />  
+                        <Route element={<Dashboard />} path='/dashboard' />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

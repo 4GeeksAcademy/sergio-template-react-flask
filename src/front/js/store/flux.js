@@ -25,23 +25,33 @@ const getState = ({ getStore, getActions, setStore }) => {
             currentPlanet: {},
             currentStarShip: {},
             currentCharacter: {},
-            favorites: []
+            alert: {visible: false, back: 'danger', text: 'Mensaje del back'},
+            favorites: [],
+            currentUser: null,
+			isLoged: false
         },
         actions: {
             exampleFunction: () => {
                 getActions().changeColor(0, "green");
             },
             getMessage: async () => {
-                try {
+         
                     // fetching data from the backend
-                    const resp = await fetch(process.env.BACKEND_URL + "/api/hello");
-                    const data = await resp.json();
+                    const options = {
+                        headers: {'Content-Type' : 'application/json'},
+                        method: 'GET'
+                    }
+                    const response = await fetch(process.env.BACKEND_URL + "/api/hello", options);
+                    if (!response.ok) {
+                        console.log("Error loading message from backend", error);
+                        return
+                    }
+                    const data = await response.json();
                     setStore({ message: data.message });
                     // don't forget to return something, that is how the async resolves
                     return data;
-                } catch (error) {
-                    console.log("Error loading message from backend", error);
-                }
+             
+                
             },
             changeColor: (index, color) => {
                 //get the store
@@ -209,7 +219,10 @@ const getState = ({ getStore, getActions, setStore }) => {
                 const store = getStore();
                 // la funcion filter guarda/actualiza los nombres que no son iguales a name
                 setStore({ favorites: store.favorites.filter(favorite => favorite !== name) });
-            }
+            },
+            setCurrentUser: (user) => {setStore({ currentUser: user })},
+			setIsLoged: (isLogin) => {setStore({ isLoged: isLogin })},
+            setAlert: (newAlert) => {setStore({ alert: newAlert })}
         }
     };
 };
