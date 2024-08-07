@@ -28,3 +28,6 @@ class Users(db.Model):
                 'identification_number': self.identification_number,
                 'is_active': self.is_active,
                 'is_admin': self.is_admin}
+
+
+

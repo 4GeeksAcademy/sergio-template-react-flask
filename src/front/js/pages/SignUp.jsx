@@ -14,6 +14,8 @@ export const SignUp = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log("form sing enviado");
+    
     const dataToSend = { email, password };
     // fetch a /api/signup enviando dataToSend
     const uri = process.env.BACKEND_URL + '/api/signup';

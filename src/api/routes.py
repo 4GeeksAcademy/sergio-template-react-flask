@@ -31,7 +31,7 @@ def login():
                                                  'user_id': user.id, 
                                                  'is_admin': user.is_admin})
     response_body['results'] = user.serialize()
-    response_body['message'] = 'User logged'
+    response_body['message'] = 'Bienvenido'
     response_body['access_token'] = access_token
     return response_body, 201
 
@@ -49,3 +49,26 @@ def protected():
     response_body['message'] = f'Acceso dengado porque no eres Administrador'
     response_body['results'] = {}
     return response_body, 403
+
+
+@api.route('/signup', methods=['POST'])
+def signup():
+    response_body = {}
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+    user = Users()
+    user.email = email
+    user.password = password
+    user.is_active = True
+    user.is_admin = False
+    db.session.add(user)
+    db.session.commit()
+    access_token = create_access_token(identity={'email': user.email,
+                                                 'user_id': user.id,
+                                                 'is_admin': user.is_admin}) 
+    response_body['results'] = user.serialize()
+    response_body['message'] = 'User registrado y logeado'
+    response_body['access_token'] = access_token
+    return response_body, 201
+
+    
