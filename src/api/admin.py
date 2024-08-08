@@ -1,9 +1,3 @@
-"""
-
-admin.py define y configura el panel de administración del sitio web utilizando Flask-Admin. 
-Proporciona una interfaz gráfica para realizar operaciones CRUD y otras configuraciones administrativas.
-
-"""
 import os
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
