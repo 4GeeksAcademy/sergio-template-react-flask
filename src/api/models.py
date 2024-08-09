@@ -30,4 +30,18 @@ class Users(db.Model):
                 'is_admin': self.is_admin}
 
 
+class Favourites(db.Model):
+    __tablename__= 'favourites'
+    id = db.Column(db.Integer, primary_key=True)
+    item = db.Column(db.String(120))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    user_to = db.relationship('Users', foreign_keys=[user_id],
+                                backref=db.backref('user_to', lazy='select'))
+    
+    def __repr__(self):
+        return f'<Favorito de {self.email}>'
 
+    def serialize(self):
+        return {'id': self.id,
+                'item': self.item,
+                'user_id': self.user_id}
