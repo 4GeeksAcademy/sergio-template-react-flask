@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
-from api.models import db, Users, Favourites
+from api.models import db, Users, Characters, Planets, Favorites
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import get_jwt_identity
@@ -40,7 +40,7 @@ def login():
 @jwt_required()
 def protected():
     response_body = {}
-    current_user = get_jwt_identity()  # Access the identity of the current user with get_jwt_identity
+    current_user = get_jwt_identity()  
     # TODO: buscar en la DB los datos del usuario
     if current_user['is_admin']:
         response_body['message'] = f'Acceso concedido a {current_user["email"]}'
@@ -79,48 +79,30 @@ def handle_favorites():
     current_user = get_jwt_identity()
     user = db.session.execute(db.select(Users).where(Users.id == current_user['user_id'])).scalar()
     if not user:
-        response_body['results'] = {}
         response_body["message"] = "Usuario no encontrado"
         return response_body, 404
     if request.method == 'POST':
         data = request.json
-        item = data.get("item")
-        if not item:
-            response_body["message"] = "favoritos no encontrados"
+        character_id = data.get("character_id")
+        planet_id = data.get("planet_id")
+        if not character_id and not planet_id:
+            response_body["message"] = "Falta el ID del personaje o del planeta"
             return response_body, 400
-        favorites = Favorites(item=item, user_id=current_user['user_id'])
-        db.session.add(favorites)
+        if character_id and planet_id:
+            response_body["message"] = "Solo puedes agregar un personaje o un planeta a la vez"
+            return response_body, 400
+        if character_id:
+            favorite = Favorites(user_id=current_user['user_id'], character_id=character_id)
+        elif planet_id:
+            favorite = Favorites(user_id=current_user['user_id'], planet_id=planet_id)
+        db.session.add(favorite)
         db.session.commit()
         response_body["message"] = "Favorito añadido"
         return response_body, 201
     if request.method == 'GET':
-        favorites = db.session.execute(db.select(Favorites).where(Favorites.user_id == current_user['user_id'])).scalars()
-        results = [{"id": row.id, "item": row.item} for row in favorites]
+        user = db.session.execute(db.select(Users).where(Users.id == current_user['user_id'])).scalar()
+        favorites = Favorites.query.filter_by(user_id=current_user['user_id']).all()
+        results = [favorite.serialize() for favorite in favorites]
         response_body['results'] = results
-        response_body['message'] = f'Favorito de {current_user["email"]} eliminado'
+        response_body['message'] = "Lista de favoritos"
         return response_body, 200
-
-
-    
-"""@api.route('/favourites/<int:user_id>', methods=['GET', 'PUT', 'DELETE'])
-def handle_favourite(user_id):
-    response_body = {}
-    favourite = db.session.execute(db.select(Favourites).where(Favourites.id == user_id)).scalar()
-    if not favourite:
-        response_body['message'] = f'Favorito de {user_id} no encontrado'
-        return response_body, 400
-    if request.method == 'GET':
-        response_body['favourite'] = favourite.serialize()
-        response_body['message'] = f'Favorito/s de {user_id}'
-        return response_body, 200
-    if request.method == 'PUT':
-        data = request.json
-        if 'item' in data: favourite.item = data['item']
-        db.session.commit()
-        response_body['message'] = f'Favorito de {user_id} actualizado'
-        return response_body, 200
-    if request.method == 'DELETE':
-        db.session.delete(favourite)
-        db.session.commit()
-        response_body ['message'] = f'Favorito de {user_id} eliminado'
-        return response_body, 200"""

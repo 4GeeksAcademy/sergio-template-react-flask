@@ -20,28 +20,65 @@ class Users(db.Model):
         return f'<User {self.email}>'
 
     def serialize(self):
-        return {'id': self.id,
-                'email': self.email,
-                'firstname': self.firstname,
-                'lastname': self.lastname,
-                'identification_type': self.identification_type,
-                'identification_number': self.identification_number,
-                'is_active': self.is_active,
-                'is_admin': self.is_admin}
+        return {
+            'id': self.id,
+            'email': self.email,
+            'firstname': self.firstname,
+            'lastname': self.lastname,
+            'identification_type': self.identification_type,
+            'identification_number': self.identification_number,
+            'is_active': self.is_active,
+            'is_admin': self.is_admin
+        }
 
 
-class Favourites(db.Model):
-    __tablename__= 'favourites'
+class Characters(db.Model):
+    __tablename__ = 'characters'
     id = db.Column(db.Integer, primary_key=True)
-    item = db.Column(db.String(120))
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    user_to = db.relationship('Users', foreign_keys=[user_id],
-                                backref=db.backref('user_to', lazy='select'))
-    
+    item = db.Column(db.String(80), nullable=False)
+
     def __repr__(self):
-        return f'<Favorito de {self.email}>'
+        return f'<Character {self.item}>'
 
     def serialize(self):
-        return {'id': self.id,
-                'item': self.item,
-                'user_id': self.user_id}
+        return {
+            'id': self.id,
+            'item': self.item
+        }
+
+
+class Planets(db.Model):
+    __tablename__ = 'planets'
+    id = db.Column(db.Integer, primary_key=True)
+    item = db.Column(db.String(80), nullable=False)
+
+    def __repr__(self):
+        return f'<Planet {self.item}>'
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'item': self.item
+        }
+
+
+class Favorites(db.Model):
+    __tablename__ = 'favorites'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    character_id = db.Column(db.Integer, db.ForeignKey('characters.id'), nullable=True)
+    planet_id = db.Column(db.Integer, db.ForeignKey('planets.id'), nullable=True)
+    user = db.relationship('Users', backref=db.backref('favorites', lazy=True))
+    character = db.relationship('Characters', backref=db.backref('favorites', lazy=True))
+    planet = db.relationship('Planets', backref=db.backref('favorites', lazy=True))
+
+    def __repr__(self):
+        return f'<Favorite {self.id}>'
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'user_id': self.user_id,
+            'character_id': self.character_id,
+            'planet_id': self.planet_id
+        }
