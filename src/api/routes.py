@@ -106,3 +106,111 @@ def handle_favorites():
         response_body['results'] = results
         response_body['message'] = "Lista de favoritos"
         return response_body, 200
+
+
+@api.route("/characters", methods=['POST', 'GET'])
+def handle_characters():
+    response_body = {}
+    if request.method == 'POST':
+        data = request.json
+        character_id = data.get("character_id")
+        item = data.get("item")
+        if not character_id:
+            response_body["message"] = "Falta el ID del personaje"
+            return response_body, 400
+        if not item:
+            response_body["message"] = "Falta el nombre del personaje"
+            return response_body, 400
+        new_character = Characters(id=character_id, item=item)
+        db.session.add(new_character)
+        db.session.commit()
+        response_body["message"] = "Personaje añadido"
+        return response_body, 201
+    if request.method == 'GET':
+        characters = Characters.query.all()
+        if not characters:
+            response_body["message"] = "No hay ningún personaje"
+            return response_body, 404
+        results = [character.serialize() for character in characters]
+        response_body['results'] = results
+        response_body['message'] = "Lista de personajes"
+        return response_body, 200
+
+
+@api.route("/characters/<int:character_id>", methods=['GET', 'PUT', 'DELETE'])
+def handle_character(character_id):
+    response_body = {}
+    character = Characters.query.get(character_id)
+    if not character:
+        response_body['message'] = f'Personaje {character_id} no encontrado'
+        return response_body, 200
+    if request.method == 'GET':
+        response_body['planet'] = character.serialize()
+        response_body['message'] = F'Personaje {character_id} encontrado'
+        return response_body, 200
+    if request.method == 'PUT':
+        data = request.json
+        if 'character_id' in data: character.character_id = data['character_id']
+        if 'item' in data: character.item = data['item']
+        db.session.commit()
+        response_body['message'] = f'Personaje actualizado'
+        return response_body, 200
+    if request.method == 'DELETE':
+        db.session.delete(character)
+        db.session.commit()
+        response_body['message'] = f'Personaje {character_id} eliminado'
+        return response_body, 200
+
+
+@api.route("/planets", methods=['POST', 'GET'])
+def handle_planets():
+    response_body = {}
+    if request.method == 'POST':
+        data = request.json
+        planet_id = data.get("planet_id")
+        item = data.get("item")
+        if not planet_id:
+            response_body["message"] = "Falta el ID del planeta"
+            return response_body, 400
+        if not item:
+            response_body["message"] = "Falta el nombre del planeta"
+            return response_body, 400
+        new_planet = Planets(id=planet_id, item=item)
+        db.session.add(new_planet)
+        db.session.commit()
+        response_body["message"] = "Planeta añadido"
+        return response_body, 201
+    if request.method == 'GET':
+        planets = Planets.query.all()
+        if not planets:
+            response_body["message"] = "No hay ningún planeta"
+            return response_body, 404
+        results = [planet.serialize() for planet in planets]
+        response_body['results'] = results
+        response_body['message'] = "Lista de planetas"
+        return response_body, 200
+
+
+@api.route("/planets/<int:planet_id>", methods=['GET', 'PUT', 'DELETE'])
+def handle_planet(planet_id):
+    response_body = {}
+    planet = Planets.query.get(planet_id)
+    if not planet:
+        response_body['message'] = f'Planeta {planet_id} no encontrado'
+        return response_body, 200
+    if request.method == 'GET':
+        response_body['planet'] = planet.serialize()
+        response_body['message'] = F'Planeta {planet_id} encontrado'
+        return response_body, 200
+    if request.method == 'PUT':
+        data = request.json
+        if 'planet_id' in data: planet.planet_id = data['planet_id']
+        if 'item' in data: planet.item = data['item']
+        db.session.commit()
+        response_body['message'] = f'Planeta actualizado'
+        return response_body, 200
+    if request.method == 'DELETE':
+        db.session.delete(planet)
+        db.session.commit()
+        response_body['message'] = f'Planeta {planet_id} eliminado'
+        return response_body, 200
